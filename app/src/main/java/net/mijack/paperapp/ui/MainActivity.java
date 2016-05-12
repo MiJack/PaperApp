@@ -1,13 +1,12 @@
-package net.mijack.paperapp;
+package net.mijack.paperapp.ui;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,19 +15,33 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import static net.mijack.paperapp.Constant.BASE_URL;
+import net.mijack.paperapp.R;
+import net.mijack.paperapp.api.Api;
+import net.mijack.paperapp.api.ApiService;
+import net.mijack.paperapp.bean.CreateResult;
+import net.mijack.paperapp.bean.QueryResult;
+import net.mijack.paperapp.util.PreferenceUtil;
 
-public class MainActivity extends AppCompatActivity implements DialogInterface.OnClickListener {
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+
+public class MainActivity extends AppCompatActivity implements DialogInterface.OnClickListener{
     private static final int REQUEST_CODE_SCAN = 1;
     TextView textView;
     Button button;
+    private Api api;
     private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        api = ApiService.getService(Api.class);
         textView = (TextView) findViewById(R.id.text);
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -47,9 +60,39 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             String result = data.getStringExtra("result");
             textView.setText(result);
 //            发起网络请求
+            api.createTask(result)
+                    .subscribeOn(Schedulers.io())
+                    .flatMap(new Func1<CreateResult, Observable<QueryResult>>() {
+                        @Override
+                        public Observable<QueryResult> call(CreateResult createResult) {
+                            String localPath = createResult.getLocalPath();
+                            int start = localPath.lastIndexOf("\\");
+                            String md5 = localPath.substring(start + 1, localPath.length() - 4);
+                            return api.queryTask(md5);
+                        }
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<QueryResult>() {
+                        @Override
+                        public void onCompleted() {
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(QueryResult queryResult) {
+                            Toast.makeText(MainActivity.this, queryResult.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+            ;
+
 
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,7 +116,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         editText = (EditText) view.findViewById(R.id.editText);
         ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         ClipData cd = cm.getPrimaryClip();
-        String string = cd.getItemAt(0).getText().toString();
+        String string = null;
+        try {
+            string = cd.getItemAt(0).getText().toString();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         if (!TextUtils.isEmpty(string)) {
             editText.setText(string);
         }
@@ -90,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         if (which == DialogInterface.BUTTON_POSITIVE) {
             if (editText != null) {
                 String baseUrl = editText.getText().toString();
-                PreferenceUtil.saveBaseUrl(this,baseUrl);
+                PreferenceUtil.saveBaseUrl(getApplication(), baseUrl);
             }
         }
     }

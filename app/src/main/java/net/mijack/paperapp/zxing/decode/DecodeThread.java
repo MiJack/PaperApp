@@ -23,7 +23,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 
 
-import net.mijack.paperapp.ScannerActivity;
+import net.mijack.paperapp.ui.ScannerActivity;
 
 import java.util.ArrayList;
 import java.util.Collection;

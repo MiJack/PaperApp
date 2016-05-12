@@ -26,13 +26,14 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import net.mijack.scanner.R;
+
+import net.mijack.paperapp.R;
 
 import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * Manages beeps and vibrations for {@link net.mijack.scanner.ScannerActivity}.
+ * Manages beeps and vibrations for {@link net.mijack.paperapp.ui.ScannerActivity}.
  */
 public class BeepManager implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, Closeable {
 

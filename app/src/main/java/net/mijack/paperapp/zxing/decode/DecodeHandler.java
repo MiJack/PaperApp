@@ -34,7 +34,7 @@ import com.google.zxing.common.HybridBinarizer;
 
 
 import net.mijack.paperapp.R;
-import net.mijack.paperapp.ScannerActivity;
+import net.mijack.paperapp.ui.ScannerActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Map;

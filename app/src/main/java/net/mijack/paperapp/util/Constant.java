@@ -1,4 +1,4 @@
-package net.mijack.paperapp;
+package net.mijack.paperapp.util;
 
 /**
  * @author MiJack

@@ -25,7 +25,7 @@ import android.os.Message;
 import com.google.zxing.Result;
 
 import net.mijack.paperapp.R;
-import net.mijack.paperapp.ScannerActivity;
+import net.mijack.paperapp.ui.ScannerActivity;
 import net.mijack.paperapp.zxing.camera.CameraManager;
 import net.mijack.paperapp.zxing.decode.DecodeThread;
 

@@ -1,4 +1,4 @@
-package net.mijack.paperapp;
+package net.mijack.paperapp.ui;
 
 
 import android.app.Activity;
@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import com.google.zxing.Result;
 
 
+import net.mijack.paperapp.R;
 import net.mijack.paperapp.zxing.camera.CameraManager;
 import net.mijack.paperapp.zxing.decode.DecodeThread;
 import net.mijack.paperapp.zxing.utils.BeepManager;

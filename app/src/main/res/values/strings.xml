@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PaperApp</string>
+    <string name="set_base_url">设置BaseUrl</string>
+</resources>

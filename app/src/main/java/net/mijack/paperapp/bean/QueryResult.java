@@ -1,5 +1,8 @@
 package net.mijack.paperapp.bean;
 
+
+import java.util.Map;
+
 /**
  * @author MiJack
  * @since 2016/5/12
@@ -11,7 +14,8 @@ public class QueryResult {
     private String packageName;
     private String versionCode;
     private String versionName;
-
+    private Map<String, PermissionGroupResult> permissionGroupResultMap;
+    private Map<String, PermissionResult> permissionResultMap;
     public STATUS getStatus() {
         return status;
     }
@@ -60,15 +64,33 @@ public class QueryResult {
         this.versionName = versionName;
     }
 
+    public Map<String, PermissionGroupResult> getPermissionGroupResultMap() {
+        return permissionGroupResultMap;
+    }
+
+    public void setPermissionGroupResultMap(Map<String, PermissionGroupResult> permissionGroupResultMap) {
+        this.permissionGroupResultMap = permissionGroupResultMap;
+    }
+
+    public Map<String, PermissionResult> getPermissionResultMap() {
+        return permissionResultMap;
+    }
+
+    public void setPermissionResultMap(Map<String, PermissionResult> permissionResultMap) {
+        this.permissionResultMap = permissionResultMap;
+    }
+
     @Override
     public String toString() {
         return "QueryResult{" +
-                "status='" + status + '\'' +
-                ", taskId='" + taskId + '\'' +
-                ", apkLabel='" + apkLabel + '\'' +
-                ", packageName='" + packageName + '\'' +
-                ", versionCode='" + versionCode + '\'' +
-                ", versionName='" + versionName + '\'' +
+                "\nstatus=" + status +
+                ", \ntaskId='" + taskId + '\'' +
+                ", \napkLabel='" + apkLabel + '\'' +
+                ", \npackageName='" + packageName + '\'' +
+                ", \nversionCode='" + versionCode + '\'' +
+                ", \nversionName='" + versionName + '\'' +
+                ", \npermissionGroupResultMap=" + permissionGroupResultMap +
+                ", \npermissionResultMap=" + permissionResultMap +
                 '}';
     }
 }

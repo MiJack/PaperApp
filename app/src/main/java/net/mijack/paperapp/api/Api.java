@@ -3,6 +3,7 @@ package net.mijack.paperapp.api;
 import net.mijack.paperapp.bean.CreateResult;
 import net.mijack.paperapp.bean.QueryResult;
 
+import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -16,5 +17,5 @@ public interface Api {
     Observable<CreateResult> createTask(@Query("apk_url") String apkUrl);
 
     @GET("queryTask")
-    Observable<QueryResult> queryTask(@Query("md5") String md5);
+    Observable<Response<QueryResult>> queryTask(@Query("md5") String md5);
 }

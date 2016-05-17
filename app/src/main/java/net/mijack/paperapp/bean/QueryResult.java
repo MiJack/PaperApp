@@ -5,18 +5,18 @@ package net.mijack.paperapp.bean;
  * @since 2016/5/12
  */
 public class QueryResult {
-    private String status;
+    private STATUS status;
     private String taskId;
     private String apkLabel;
     private String packageName;
     private String versionCode;
     private String versionName;
 
-    public String getStatus() {
+    public STATUS getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(STATUS status) {
         this.status = status;
     }
 

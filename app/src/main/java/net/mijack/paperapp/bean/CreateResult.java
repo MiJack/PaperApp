@@ -6,7 +6,7 @@ package net.mijack.paperapp.bean;
  */
 public class CreateResult {
 private String localPath;
-    private String status;
+    private STATUS status;
     private String url;
 
     public String getLocalPath() {
@@ -17,11 +17,11 @@ private String localPath;
         this.localPath = localPath;
     }
 
-    public String getStatus() {
+    public STATUS getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(STATUS status) {
         this.status = status;
     }
 

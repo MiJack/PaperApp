@@ -22,6 +22,8 @@ import net.mijack.paperapp.api.Api;
 import net.mijack.paperapp.api.ApiService;
 import net.mijack.paperapp.bean.CreateResult;
 import net.mijack.paperapp.bean.QueryResult;
+import net.mijack.paperapp.bean.STATUS;
+import net.mijack.paperapp.rx.BaseSubscriber;
 import net.mijack.paperapp.util.PreferenceUtil;
 
 import rx.Observable;
@@ -30,7 +32,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity implements DialogInterface.OnClickListener{
+public class MainActivity extends AppCompatActivity implements DialogInterface.OnClickListener {
     private static final int REQUEST_CODE_SCAN = 1;
     TextView textView;
     Button button;
@@ -62,6 +64,26 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 //            发起网络请求
             api.createTask(result)
                     .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .filter(new Func1<CreateResult, Boolean>() {
+                        @Override
+                        public Boolean call(CreateResult createResult) {
+                            STATUS status = createResult.getStatus();
+                            switch (status) {
+                                case WAIT:
+                                    Toast.makeText(MainActivity.this, "任务已提交，等待下载", Toast.LENGTH_SHORT).show();
+                                    break;
+                                case DOING:
+                                    Toast.makeText(MainActivity.this, "任务已下载", Toast.LENGTH_SHORT).show();
+                                    break;
+                                case UNKNOWN:
+                                    Toast.makeText(MainActivity.this, "提交异常", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                            return status.equals(STATUS.FINISH);
+                        }
+                    })
+                    .observeOn(Schedulers.io())
                     .flatMap(new Func1<CreateResult, Observable<QueryResult>>() {
                         @Override
                         public Observable<QueryResult> call(CreateResult createResult) {
@@ -72,24 +94,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         }
                     })
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<QueryResult>() {
-                        @Override
-                        public void onCompleted() {
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
+                    .subscribe(new BaseSubscriber<QueryResult>(){
                         @Override
                         public void onNext(QueryResult queryResult) {
-                            Toast.makeText(MainActivity.this, queryResult.toString(), Toast.LENGTH_SHORT).show();
+                            
                         }
                     })
             ;
-
-
         }
     }
 

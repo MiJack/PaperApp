@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/itemLabel"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        tools:text="权限组名称：您的应用信息"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/itemName"
+        android:textSize="@dimen/head2"
+        tools:text="权限组别名：android.permission-group.APP_INFO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/itemDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="权限组描述：能够影响设备上其他应用的行为"/>
+
+    <TextView
+        android:id="@+id/itemStatisticName"
+        tools:text="权限组统计：共有4个权限申明，API调用12次"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

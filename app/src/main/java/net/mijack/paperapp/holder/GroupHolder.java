@@ -1,5 +1,6 @@
 package net.mijack.paperapp.holder;
 
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -21,13 +22,16 @@ public class GroupHolder extends RecyclerView.ViewHolder {
         super(itemView);
         groupLabel = (TextView) itemView.findViewById(R.id.groupLabel);
         groupName = (TextView) itemView.findViewById(R.id.groupName);
-        groupDesc= (TextView) itemView.findViewById(R.id.groupDesc);
-        groupStatisticName= (TextView) itemView.findViewById(R.id.groupStatisticName);
+        groupDesc = (TextView) itemView.findViewById(R.id.groupDesc);
+        groupStatisticName = (TextView) itemView.findViewById(R.id.groupStatisticName);
     }
 
     public void bindData(PermissionGroupResult result) {
+        Resources resources = groupStatisticName.getResources();
         groupLabel.setText(result.getLabel());
         groupName.setText(result.getName());
         groupDesc.setText(result.getDescription());
+        groupStatisticName.setText(resources.getString(R.string.group_statistic,
+                result.getPermissionCount()));
     }
 }

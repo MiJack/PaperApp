@@ -1,6 +1,7 @@
 package net.mijack.paperapp.view;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ public class ColorItemDecoration extends RecyclerView.ItemDecoration {
 
     public ColorItemDecoration() {
         paint = new Paint();
+        color= Color.parseColor("#e9edf3");
     }
 
     public void setColor(int color) {

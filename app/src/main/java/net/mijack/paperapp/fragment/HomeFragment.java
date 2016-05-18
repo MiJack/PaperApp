@@ -2,6 +2,7 @@ package net.mijack.paperapp.fragment;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import net.mijack.paperapp.R;
@@ -21,6 +21,7 @@ import net.mijack.paperapp.bean.CreateResult;
 import net.mijack.paperapp.bean.QueryResult;
 import net.mijack.paperapp.bean.STATUS;
 import net.mijack.paperapp.rx.BaseSubscriber;
+import net.mijack.paperapp.ui.MainActivity;
 import net.mijack.paperapp.ui.ScannerActivity;
 
 import retrofit2.Response;
@@ -56,11 +57,15 @@ public class HomeFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ScannerActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_SCAN);
+                scan(getActivity());
             }
         });
         return view;
+    }
+
+    public void scan(Context context) {
+        Intent intent = new Intent(context, ScannerActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_SCAN);
     }
 
 

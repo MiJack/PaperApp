@@ -1,5 +1,7 @@
 package net.mijack.paperapp.bean;
 
+import java.util.Map;
+
 /**
  * @author MiJack
  * @since 2016/5/17
@@ -11,7 +13,9 @@ public class PermissionGroupResult {
     protected String name;
     protected String priority;
     protected String permissionGroupFlags;
-    protected int count = -1;
+    protected int functionInvokeCount = -1;
+    protected int permissionCount = 0;
+    protected Map<String, PermissionResult> permissionMap;
 
     public PermissionGroupResult() {
     }
@@ -64,16 +68,27 @@ public class PermissionGroupResult {
         this.permissionGroupFlags = permissionGroupFlags;
     }
 
-    public int getCount() {
-        return count;
+    public int getFunctionInvokeCount() {
+        return functionInvokeCount;
     }
 
-    public void addCount(int count) {
-        if (count<=0){return;}
-        if (count == -1) {
-            this.count = count;
-        } else {
-            this.count = this.count + count;
-        }
+    public void setFunctionInvokeCount(int functionInvokeCount) {
+        this.functionInvokeCount = functionInvokeCount;
+    }
+
+    public int getPermissionCount() {
+        return permissionCount;
+    }
+
+    public void setPermissionCount(int permissionCount) {
+        this.permissionCount = permissionCount;
+    }
+
+    public Map<String, PermissionResult> getPermissionMap() {
+        return permissionMap;
+    }
+
+    public void setPermissionMap(Map<String, PermissionResult> permissionMap) {
+        this.permissionMap = permissionMap;
     }
 }

@@ -1,12 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical"
+    android:paddingTop="16dp">
+
+    <LinearLayout style="@style/itemLayoutStyle">
+
+        <TextView
+            style="@style/titleStyle"
+            android:text="应用名：" />
+
+        <TextView
+            android:id="@+id/appName"
+            style="@style/valueStyle"
+            tools:text="Android Test" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/itemLayoutStyle">
+
+        <TextView
+            style="@style/titleStyle"
+            android:text="应用包名：" />
+
+        <TextView
+            android:id="@+id/appPackageName"
+            style="@style/valueStyle"
+            tools:text="com.android.test" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/itemLayoutStyle">
+
+        <TextView
+            style="@style/titleStyle"
+            android:text="应用版本号：" />
+
+        <TextView
+            android:id="@+id/appVersionCode"
+            style="@style/valueStyle"
+            tools:text="1" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/itemLayoutStyle">
+
+        <TextView
+            style="@style/titleStyle"
+            android:text="应用名：" />
+
+        <TextView
+            android:id="@+id/appVersionName"
+            style="@style/valueStyle"
+            tools:text="1.0" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/itemLayoutStyle">
+        <TextView
+            style="@style/titleStyle"
+            android:text="权限组说明：" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="New Text"
-        android:id="@+id/textView1"
-        android:layout_gravity="center_horizontal" />
+        android:visibility="gone" />
 </LinearLayout>

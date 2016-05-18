@@ -1,6 +1,6 @@
 package net.mijack.paperapp.fragment;
 
-import android.graphics.Color;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +17,7 @@ import net.mijack.paperapp.bean.PermissionGroupResult;
 import net.mijack.paperapp.bean.QueryResult;
 import net.mijack.paperapp.callback.RecyclerViewItemTouchListener;
 import net.mijack.paperapp.view.ColorItemDecoration;
+import net.mijack.paperapp.view.PermissionsResultDialog;
 
 import retrofit2.Response;
 
@@ -37,8 +38,11 @@ public class ResultFragment extends Fragment {
     private RecyclerViewItemTouchListener.OnItemClickListener itemClickListener=new RecyclerViewItemTouchListener.SimpleItemClickListener(){
         @Override
         public void onItemClick(View view, int position) {
+            Context context = getActivity();
             PermissionGroupResult item = groupAdapter.getItem(position);
-
+            PermissionsResultDialog dialog=new PermissionsResultDialog(context);
+            dialog.setItem(item);
+            dialog.show();
         }
     };
 
@@ -57,8 +61,7 @@ public class ResultFragment extends Fragment {
         groupAdapter = new PermissionGroupAdapter();
         recyclerView.setAdapter(groupAdapter);
         ColorItemDecoration decoration = new ColorItemDecoration();
-        decoration.setColor(Color.GRAY);
-        recyclerView.addItemDecoration(decoration);
+         recyclerView.addItemDecoration(decoration);
         RecyclerViewItemTouchListener listener = new RecyclerViewItemTouchListener(recyclerView, itemClickListener);
         recyclerView.addOnItemTouchListener(listener);
         return view;

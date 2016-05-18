@@ -3,43 +3,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:minHeight="256dp"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <TextView
             android:id="@+id/groupLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#222222"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/head1"
             android:textStyle="bold"
             tools:text="权限组名称：您的应用信息" />
 
         <TextView
-            android:id="@+id/groupStatisticName"
+            android:id="@+id/groupName"
             android:layout_width="wrap_content"
-            android:textSize="@dimen/head3"
             android:layout_height="wrap_content"
-            tools:text="权限组统计：共有4个权限申明，API调用12次" />
+            android:ellipsize="end"
+            android:visibility="gone"
+            android:singleLine="true"
+            android:textSize="@dimen/head3"
+            tools:text="权限组别名：android.permission-group.APP_INFO" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/groupName"
-        android:layout_width="wrap_content"
-        android:textSize="@dimen/head2"
-        android:layout_height="wrap_content"
-        tools:text="权限组别名：android.permission-group.APP_INFO" />
 
     <TextView
         android:id="@+id/groupDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/head3"
+        android:layout_marginBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         tools:text="权限组描述：能够影响设备上其他应用的行为" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

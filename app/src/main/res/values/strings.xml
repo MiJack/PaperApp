@@ -3,4 +3,6 @@
     <string name="set_base_url">设置BaseUrl</string>
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_close">drawer_close</string>
+    <string name="group_statistic" >（共使用了该组的%1$d个权限）</string>
+    <string name="api_statistic" >该权限相关API共调用%1$d次</string>
 </resources>

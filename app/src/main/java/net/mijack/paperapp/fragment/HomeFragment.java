@@ -5,8 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +20,8 @@ import net.mijack.paperapp.api.ApiService;
 import net.mijack.paperapp.bean.CreateResult;
 import net.mijack.paperapp.bean.QueryResult;
 import net.mijack.paperapp.bean.STATUS;
+import net.mijack.paperapp.db.HistoryDAO;
 import net.mijack.paperapp.rx.BaseSubscriber;
-import net.mijack.paperapp.ui.MainActivity;
 import net.mijack.paperapp.ui.ScannerActivity;
 
 import retrofit2.Response;
@@ -34,7 +34,7 @@ import rx.schedulers.Schedulers;
  * @author MiJack
  * @since 2016/5/17
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
 
     private static final String TAG = "HomeFragment";
     private View view;
@@ -82,6 +82,10 @@ public class HomeFragment extends Fragment {
                     .filter(new Func1<CreateResult, Boolean>() {
                         @Override
                         public Boolean call(CreateResult createResult) {
+                            String apkUrl = createResult.getUrl();
+                            String fileMd5 = createResult.getFileMD5();
+                            String createTime =String.valueOf(System.currentTimeMillis());
+                            HistoryDAO.insertOrUpdateHistory(getActivity(), apkUrl, fileMd5, createTime);
                             STATUS status = createResult.getStatus();
                             switch (status) {
                                 case WAIT:
@@ -101,10 +105,7 @@ public class HomeFragment extends Fragment {
                     .flatMap(new Func1<CreateResult, Observable<Response<QueryResult>>>() {
                         @Override
                         public Observable<Response<QueryResult>> call(CreateResult createResult) {
-                            String localPath = createResult.getLocalPath();
-                            int start = localPath.lastIndexOf("\\");
-                            String md5 = localPath.substring(start + 1, localPath.length() - 4);
-                            return api.queryTask(md5);
+                            return api.queryTask(createResult.getFileMD5());
                         }
                     })
                     .observeOn(AndroidSchedulers.mainThread())

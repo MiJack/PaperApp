@@ -15,12 +15,6 @@ public class PaperApp extends Application{
     public void onCreate() {
         super.onCreate();
         ApiService.init(this);
-        Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(
-                                Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(
-                                Stetho.defaultInspectorModulesProvider(this))
-                        .build());
+        Stetho.initializeWithDefaults(this);
     }
 }

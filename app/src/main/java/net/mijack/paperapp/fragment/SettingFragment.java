@@ -12,7 +12,7 @@ import android.widget.TextView;
  * @author MiJack
  * @since 2016/5/17
  */
-public class SettingFragment extends Fragment {
+public class SettingFragment extends BaseFragment {
 
     @Nullable
     @Override

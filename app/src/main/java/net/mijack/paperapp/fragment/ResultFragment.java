@@ -3,7 +3,6 @@ package net.mijack.paperapp.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,7 +24,7 @@ import retrofit2.Response;
  * @author MiJack
  * @since 2016/5/18
  */
-public class ResultFragment extends Fragment {
+public class ResultFragment extends BaseFragment {
     private View view;
     private TextView textView;
     private TextView appName;

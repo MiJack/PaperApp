@@ -3,6 +3,8 @@ package net.mijack.paperapp.api;
 import net.mijack.paperapp.bean.CreateResult;
 import net.mijack.paperapp.bean.QueryResult;
 
+import java.util.Map;
+
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -18,4 +20,7 @@ public interface Api {
 
     @GET("queryTask")
     Observable<Response<QueryResult>> queryTask(@Query("md5") String md5);
+
+    @GET("statistics")
+    Observable<Map<String, String>> statistics(@Query("md5") String md5, @Query("install") boolean install);
 }

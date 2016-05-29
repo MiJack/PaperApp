@@ -14,8 +14,18 @@ public class QueryResult {
     private String packageName;
     private String versionCode;
     private String versionName;
+    private String fileMd5;
     private Map<String, PermissionGroupResult> permissionGroupResultMap;
     private Map<String, PermissionResult> permissionResultMap;
+
+    public String getFileMd5() {
+        return fileMd5;
+    }
+
+    public void setFileMd5(String fileMd5) {
+        this.fileMd5 = fileMd5;
+    }
+
     public STATUS getStatus() {
         return status;
     }

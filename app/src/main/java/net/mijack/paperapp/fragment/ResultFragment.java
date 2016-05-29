@@ -44,6 +44,11 @@ public class ResultFragment extends BaseFragment {
             dialog.show();
         }
     };
+    private QueryResult queryResult;
+
+    public QueryResult getQueryResult() {
+        return queryResult;
+    }
 
     @Nullable
     @Override
@@ -67,7 +72,7 @@ public class ResultFragment extends BaseFragment {
     }
 
     public void update(Response<QueryResult> response) {
-        QueryResult queryResult = response.body();
+        queryResult = response.body();
         textView.setText(queryResult.toString());
         appName.setText(queryResult.getApkLabel());
         appPackageName.setText(queryResult.getPackageName());

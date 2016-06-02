@@ -26,7 +26,6 @@ import net.mijack.paperapp.db.HistoryDAO;
 import net.mijack.paperapp.rx.BaseSubscriber;
 import net.mijack.paperapp.ui.ScannerActivity;
 
-import java.io.IOException;
 import java.util.Map;
 
 import retrofit2.Response;
@@ -154,51 +153,55 @@ public class HomeFragment extends BaseFragment {
             String result = data.getStringExtra("result");
 //            textView.setText(result);
 //            发起网络请求
-            api.createTask(result)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .filter(new Func1<CreateResult, Boolean>() {
-                        @Override
-                        public Boolean call(CreateResult createResult) {
-                            String apkUrl = createResult.getUrl();
-                            String fileMd5 = createResult.getFileMD5();
-                            String createTime = String.valueOf(System.currentTimeMillis());
-                            HistoryDAO.insertOrUpdateHistory(getActivity(), apkUrl, fileMd5, createTime);
-                            STATUS status = createResult.getStatus();
-                            switch (status) {
-                                case WAIT:
-                                    Toast.makeText(getActivity(), "任务已提交，等待下载", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case DOING:
-                                    Toast.makeText(getActivity(), "任务已下载", Toast.LENGTH_SHORT).show();
-                                    break;
-                                case UNKNOWN:
-                                    Toast.makeText(getActivity(), "提交异常", Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                            return status.equals(STATUS.FINISH);
-                        }
-                    })
-                    .observeOn(Schedulers.io())
-                    .flatMap(new Func1<CreateResult, Observable<Response<QueryResult>>>() {
-                        @Override
-                        public Observable<Response<QueryResult>> call(CreateResult createResult) {
-                            return api.queryTask(createResult.getFileMD5());
-                        }
-                    })
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new BaseSubscriber<Response<QueryResult>>() {
-                        @Override
-                        public void onNext(Response<QueryResult> response) {
-                            resultFragment.update(response);
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.d(TAG, "Error", e);
-                        }
-                    })
-            ;
+            analyze(result);
         }
+    }
+
+    public void analyze(String url) {
+        api.createTask(url)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter(new Func1<CreateResult, Boolean>() {
+                    @Override
+                    public Boolean call(CreateResult createResult) {
+                        String apkUrl = createResult.getUrl();
+                        String fileMd5 = createResult.getFileMD5();
+                        String createTime = String.valueOf(System.currentTimeMillis());
+                        HistoryDAO.insertOrUpdateHistory(getActivity(), apkUrl, fileMd5, createTime);
+                        STATUS status = createResult.getStatus();
+                        switch (status) {
+                            case WAIT:
+                                Toast.makeText(getActivity(), "任务已提交，等待下载", Toast.LENGTH_SHORT).show();
+                                break;
+                            case DOING:
+                                Toast.makeText(getActivity(), "任务已下载", Toast.LENGTH_SHORT).show();
+                                break;
+                            case UNKNOWN:
+                                Toast.makeText(getActivity(), "提交异常", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        return status.equals(STATUS.FINISH);
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .flatMap(new Func1<CreateResult, Observable<Response<QueryResult>>>() {
+                    @Override
+                    public Observable<Response<QueryResult>> call(CreateResult createResult) {
+                        return api.queryTask(createResult.getFileMD5());
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<Response<QueryResult>>() {
+                    @Override
+                    public void onNext(Response<QueryResult> response) {
+                        resultFragment.update(response);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "Error", e);
+                    }
+                })
+        ;
     }
 }

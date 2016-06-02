@@ -39,42 +39,4 @@ public class HistoryAdapter extends CursorAdapter {
         }
     }
 
-    static DateFormat format = new SimpleDateFormat("yyyy-MMM-dd HH:mm");
-
-    static private class Holder {
-
-
-        TextView idView;
-        TextView apkUrlView;
-        TextView apkMD5View;
-        TextView taskTimeView;
-        TextView statusView;
-
-        public Holder(View view) {
-            idView = (TextView) view.findViewById(R.id.id);
-            apkUrlView = (TextView) view.findViewById(R.id.apkUrl);
-            apkMD5View = (TextView) view.findViewById(R.id.apkMD5);
-            taskTimeView = (TextView) view.findViewById(R.id.taskTime);
-            statusView = (TextView) view.findViewById(R.id.status);
-        }
-
-        public void bind(Cursor cursor) {
-            bindValue(idView, cursor, HistoryDAO.COLUMN_ID);
-            bindValue(apkUrlView, cursor, HistoryDAO.COLUMN_APK_URL);
-            bindValue(apkMD5View, cursor, HistoryDAO.COLUMN_FILE_MD5);
-            bindValue(statusView, cursor, HistoryDAO.COLUMN_ANALYSIS_STATUS);
-            try {
-                int index = cursor.getColumnIndex(HistoryDAO.COLUMN_CREATE_TIME);
-                String time = format.format(new Date(cursor.getLong(index)));
-                taskTimeView.setText(time);
-            } catch (Exception e) {
-            }
-        }
-
-        private void bindValue(TextView idView, Cursor cursor, String column) {
-            int index = cursor.getColumnIndex(column);
-            String string = cursor.getString(index);
-            idView.setText(string);
-        }
-    }
 }

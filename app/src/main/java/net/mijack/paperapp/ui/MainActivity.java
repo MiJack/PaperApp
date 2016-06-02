@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -73,6 +74,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (currentFragment !=null){
+            currentFragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         switch (itemId) {
@@ -108,7 +117,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
             }
         }
-        FragmentTransaction transaction = getSupportFragmentManager()
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager
                 .beginTransaction();
         if (currentFragment != null) {
             transaction.hide(currentFragment);
@@ -120,6 +130,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         currentFragment = fragment;
         transaction.commit();
+        fragmentManager.executePendingTransactions();
+    }
+
+    public void changeUrl(String url) {
+        changeFragment(R.id.action_main);
+        if (currentFragment instanceof HomeFragment){
+            ((HomeFragment)currentFragment).analyze(url);
+        }
     }
 
 //    private static final int REQUEST_CODE_SCAN = 1;

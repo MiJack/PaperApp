@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import net.mijack.paperapp.api.ApiService;
+
 import static net.mijack.paperapp.util.Constant.BASE_URL;
 
 /**
@@ -18,6 +20,7 @@ public class PreferenceUtil {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(BASE_URL, baseUrl);
         editor.commit();
+        ApiService.baseUrl=baseUrl;
 
     }
 

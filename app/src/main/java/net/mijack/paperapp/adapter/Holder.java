@@ -22,6 +22,7 @@ public class Holder {
     TextView apkMD5View;
     TextView taskTimeView;
     TextView statusView;
+    private String id;
 
     public Holder(View view) {
         idView = (TextView) view.findViewById(R.id.id);
@@ -31,13 +32,15 @@ public class Holder {
         statusView = (TextView) view.findViewById(R.id.status);
     }
 
-    public void bind(Cursor cursor) {
-        bindValue(idView, cursor, HistoryDAO.COLUMN_ID);
+    public void bind(Cursor cursor, int position) {
+        idView.setText(String.valueOf(position));
+        int index = cursor.getColumnIndex(HistoryDAO.COLUMN_ID);
+        id = cursor.getString(index);
         bindValue(apkUrlView, cursor, HistoryDAO.COLUMN_APK_URL);
         bindValue(apkMD5View, cursor, HistoryDAO.COLUMN_FILE_MD5);
         bindValue(statusView, cursor, HistoryDAO.COLUMN_ANALYSIS_STATUS);
         try {
-            int index = cursor.getColumnIndex(HistoryDAO.COLUMN_CREATE_TIME);
+            index = cursor.getColumnIndex(HistoryDAO.COLUMN_CREATE_TIME);
             String time = format.format(new Date(cursor.getLong(index)));
             taskTimeView.setText(time);
         } catch (Exception e) {
@@ -49,5 +52,9 @@ public class Holder {
         int index = cursor.getColumnIndex(column);
         String string = cursor.getString(index);
         idView.setText(string);
+    }
+
+    public String getId() {
+        return id;
     }
 }

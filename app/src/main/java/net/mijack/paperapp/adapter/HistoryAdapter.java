@@ -31,12 +31,33 @@ public class HistoryAdapter extends CursorAdapter {
         return view;
     }
 
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (!mDataValid) {
+            throw new IllegalStateException("this should only be called when the cursor is valid");
+        }
+        if (!mCursor.moveToPosition(position)) {
+            throw new IllegalStateException("couldn't move cursor to position " + position);
+        }
+        View v;
+        if (convertView == null) {
+            v = newView(mContext, mCursor, parent);
+        } else {
+            v = convertView;
+        }
+        bindView(v, mCursor, position);
+        return v;
+    }
+
+    private void bindView(View view, Cursor cursor, int position) {
         Holder h = (Holder) view.getTag();
         if (h != null) {
-            h.bind(cursor);
+            h.bind(cursor, position);
         }
     }
 
+
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+
+    }
 }

@@ -68,6 +68,12 @@ public class HistoryDAO {
         return database.query(TABLE, COLUMNS, null, null, null, null, null);
     }
 
+    public static int delete(FragmentActivity activity, String id) {
+        DatabaseHelper helper = new DatabaseHelper(activity);
+        SQLiteDatabase database = helper.getReadableDatabase();
+        return database.delete(TABLE, COLUMN_ID+"="+id,null);
+    }
+
 
     public static class DatabaseHelper extends SQLiteOpenHelper {
         private static final int DATABASE_VERSION = 1;

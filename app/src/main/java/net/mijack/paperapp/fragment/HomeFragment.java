@@ -2,6 +2,8 @@ package net.mijack.paperapp.fragment;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -32,6 +34,7 @@ import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -89,7 +92,10 @@ public class HomeFragment extends BaseFragment {
             return;
         }
         QueryResult result = resultFragment.getQueryResult();
-        String fileMd5 = result!=null?result.getFileMd5():"0A27B86BEEBEA5D1166E4B8E28940CD3";
+        if (result == null) {
+            return;
+        }
+        String fileMd5 = result.getFileMd5();
         api.statistics(fileMd5, install)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -118,10 +124,16 @@ public class HomeFragment extends BaseFragment {
                         return FileDownloadApi.downloadFile(md5, "/paperapp/");
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Uri>() {
                     @Override
-                    public void onCompleted() {
+                    public void onStart() {
+                        showDialog();
+                    }
 
+                    @Override
+                    public void onCompleted() {
+                        hideDialog();
                     }
 
                     @Override
@@ -138,6 +150,23 @@ public class HomeFragment extends BaseFragment {
                     }
                 })
         ;
+    }
+
+    ProgressDialog dialog;
+
+    private void showDialog() {
+        if (dialog == null) {
+            dialog = new ProgressDialog(getActivity());
+            dialog.setCancelable(false);
+            dialog.setTitle(getString(R.string.file_downloading));
+        }
+        dialog.show();
+    }
+
+    private void hideDialog() {
+        if (dialog != null) {
+            dialog.hide();
+        }
     }
 
     public void scan(Context context) {
@@ -158,6 +187,15 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void analyze(String url) {
+        if (!isAPKUrl(url)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(getString(R.string.error))
+                    .setMessage(getString(R.string.error_msg, url))
+                    .setPositiveButton(R.string.positive, null)
+                    .setCancelable(false)
+                    .create().show();
+            return;
+        }
         api.createTask(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -203,5 +241,14 @@ public class HomeFragment extends BaseFragment {
                     }
                 })
         ;
+    }
+
+    private boolean isAPKUrl(String url) {
+        if (url.startsWith("http://") || url.startsWith("https://")) {
+            if (url.endsWith(".apk")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

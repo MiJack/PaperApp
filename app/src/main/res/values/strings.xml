@@ -5,4 +5,9 @@
     <string name="drawer_close">drawer_close</string>
     <string name="group_statistic" >（共使用了该组的%1$d个权限）</string>
     <string name="api_statistic" >该权限相关API共调用%1$d次</string>
+    <string name="file_downloading">文件下载中...</string>
+    <string name="error">错误</string>
+    <string name="error_msg">链接%s不是APK文件</string>
+    <string name="positive">确定</string>
+    <string name="delete">删除记录%s</string>
 </resources>

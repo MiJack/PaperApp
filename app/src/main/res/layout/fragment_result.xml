@@ -47,7 +47,7 @@
 
         <TextView
             style="@style/titleStyle"
-            android:text="应用名：" />
+            android:text="应用版本名：" />
 
         <TextView
             android:id="@+id/appVersionName"

@@ -96,6 +96,7 @@ public class HomeFragment extends BaseFragment {
             return;
         }
         String fileMd5 = result.getFileMd5();
+        showDialog();
         api.statistics(fileMd5, install)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -126,10 +127,7 @@ public class HomeFragment extends BaseFragment {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Uri>() {
-                    @Override
-                    public void onStart() {
-                        showDialog();
-                    }
+
 
                     @Override
                     public void onCompleted() {
@@ -232,7 +230,17 @@ public class HomeFragment extends BaseFragment {
                 .subscribe(new BaseSubscriber<Response<QueryResult>>() {
                     @Override
                     public void onNext(Response<QueryResult> response) {
+                        QueryResult result = response.body();
                         resultFragment.update(response);
+                        if (result == null) {
+                            return;
+                        }
+                        int install = result.getInstall();
+                        int uninstall = result.getUninstall();
+                        if (install > 0 || uninstall > 0) {
+                            button1.setText(getResources().getString(R.string.install, Math.max(0, install)));
+                            button2.setText(getResources().getString(R.string.uninstall, Math.max(0, uninstall)));
+                        }
                     }
 
                     @Override

@@ -15,6 +15,8 @@ public class QueryResult {
     private String versionCode;
     private String versionName;
     private String fileMd5;
+    private int install;
+    private int uninstall;
     private Map<String, PermissionGroupResult> permissionGroupResultMap;
     private Map<String, PermissionResult> permissionResultMap;
 
@@ -88,6 +90,22 @@ public class QueryResult {
 
     public void setPermissionResultMap(Map<String, PermissionResult> permissionResultMap) {
         this.permissionResultMap = permissionResultMap;
+    }
+
+    public int getInstall() {
+        return install;
+    }
+
+    public void setInstall(int install) {
+        this.install = install;
+    }
+
+    public int getUninstall() {
+        return uninstall;
+    }
+
+    public void setUninstall(int uninstall) {
+        this.uninstall = uninstall;
     }
 
     @Override
